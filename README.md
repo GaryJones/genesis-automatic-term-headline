@@ -40,7 +40,7 @@ Just activate the plugin, and the term headlines will automatically appear.
 
 ### Selective Criteria
 
-If you want to be a bit more selective of which taxonomies the plugin affects, you can use the `genesis-automatic-term-headline-exclusion` filter. It's a boolean filter, where any truthy value will stop the term headline from appearing. To not add the term headlines for post tags, for categories begining with _Test_, or the archive page for the flavour taxonomy with the slug of 'mild', for instance, you can do:
+If you want to be a bit more selective of which taxonomies the plugin affects, you can use the `genesis-automatic-term-headline-exclusion` filter. It's a boolean filter, where any truthy value will stop the term headline from appearing. To not add the term headlines for post tag archives, for category archives for categories begining with _Test_, or the archive page for the _flavour_ taxonomy with the slug of _mild_, for instance, you can do:
 
 ~~~php
 add_filter( 'genesis-automatic-term-headline-exclusion', 'prefix_automatic_term_headline_exclusion' );
@@ -54,9 +54,11 @@ add_filter( 'genesis-automatic-term-headline-exclusion', 'prefix_automatic_term_
 function prefix_automatic_term_headline_exclusion( $return ) {
 	if ( is_tag() || 'Test' === substr( single_cat_title( '', false ), 0, 4 ) || is_tax( 'flavour', 'mild') )
 		return true;
-	return false;
+	return $return;
 }
 ~~~
+
+By returning `$return` instead of `false`, you allow more choices from other functions hooked to this filter to be carried through.
 
 ## Credits
 
