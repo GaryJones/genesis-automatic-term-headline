@@ -12,7 +12,7 @@
  * Plugin Name: Genesis Automatic Term Headline
  * Plugin URI:  https://github.com/GaryJones/genesis-automatic-term-headline
  * Description: Automatically adds a headline to the term archive page, the same as the name of taxonomy term, if no explicit value is given.
- * Version:     1.0.0
+ * Version:     1.1.0
  * Author:      Gary Jones
  * Author URI:  http://gamajo.com/
  * Text Domain: genesis-automatic-term-headline
@@ -26,12 +26,22 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-remove_action( 'genesis_before_loop', 'genesis_do_taxonomy_title_description', 15 );
+add_action( 'genesis_before', 'genesis_automatic_term_headline_remove_taxonomy_title_description' );
+/**
+ * Remove the existing headline and intro text.
+ * @since 1.1.0
+ */
+function genesis_automatic_term_headline_remove_taxonomy_title_description() {
+	remove_action( 'genesis_before_loop', 'genesis_do_taxonomy_title_description', 15 );
+}
+
 add_action( 'genesis_before_loop', 'genesis_automatic_term_headline_do_taxonomy_title_description', 15 );
 /**
  * Change the behaviour of the default term headline, by making the default the name of the term.
  *
  * If the headline has been customised in some way, hen this will show instead.
+ *
+ * @since 1.0.0
  *
  * @author Gary Jones, Gamajo Tech
  *
@@ -52,8 +62,12 @@ function genesis_automatic_term_headline_do_taxonomy_title_description() {
 	if ( ! $term || ! isset( $term->meta ) )
 		return;
 
-	$headline_text = $term->meta['headline'] ? $term->meta['headline'] : $term->name;
-	//$headline_text = $term->meta['headline'] ? $term->meta['headline'] : 'Foo';
+	if ( $term->meta['headline'] )
+		$headline_text = $term->meta['headline'];
+	elseif ( apply_filters( 'genesis-automatic-term-headline-exclusion', false ) )
+		$headline_text = '';
+	else
+		$headline_text = $term->name;
 
 	$headline = sprintf( '<h1 class="archive-title">%s</h1>', strip_tags( $headline_text ) );
 
