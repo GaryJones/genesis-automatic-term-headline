@@ -29,6 +29,7 @@ if ( ! defined( 'WPINC' ) ) {
 add_action( 'genesis_before', 'genesis_automatic_term_headline_remove_taxonomy_title_description' );
 /**
  * Remove the existing headline and intro text.
+ *
  * @since 1.1.0
  */
 function genesis_automatic_term_headline_remove_taxonomy_title_description() {
