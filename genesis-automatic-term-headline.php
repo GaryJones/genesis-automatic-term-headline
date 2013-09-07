@@ -9,16 +9,18 @@
  * @copyright 2013 Gary Jones, Gamajo Tech
  *
  * @wordpress-plugin
- * Plugin Name: Genesis Automatic Term Headline
- * Plugin URI:  https://github.com/GaryJones/genesis-automatic-term-headline
- * Description: Automatically adds a headline to the term archive page, the same as the name of taxonomy term, if no explicit value is given.
- * Version:     1.1.0
- * Author:      Gary Jones
- * Author URI:  http://gamajo.com/
- * Text Domain: genesis-automatic-term-headline
- * License:     GPL-2.0+
- * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
- * Domain Path: /lang
+ * Plugin Name:       Genesis Automatic Term Headline
+ * Plugin URI:        https://github.com/GaryJones/genesis-automatic-term-headline
+ * Description:       Automatically adds a headline to the term archive page, the same as the name of taxonomy term, if no explicit value is given.
+ * Version:           1.1.0
+ * Author:            Gary Jones
+ * Author URI:        http://gamajo.com/
+ * Text Domain:       genesis-automatic-term-headline
+ * License:           GPL-2.0+
+ * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * Domain Path:       /lang
+ * GitHub Plugin URI: https://github.com/GaryJones/genesis-automatic-term-headline
+ * GitHub Branch:     master
  */
 
 // If this file is called directly, abort.
