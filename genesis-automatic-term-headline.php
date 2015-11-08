@@ -12,7 +12,7 @@
  * Plugin Name:       Genesis Automatic Term Headline
  * Plugin URI:        https://github.com/GaryJones/genesis-automatic-term-headline
  * Description:       Automatically adds a headline to the term archive page, the same as the name of taxonomy term, if no explicit value is given.
- * Version:           1.1.1
+ * Version:           1.2.0
  * Author:            Gary Jones
  * Author URI:        https://gamajo.com/
  * Text Domain:       genesis-automatic-term-headline
