@@ -1,0 +1,20 @@
+{
+  "name": "garyjones/genesis-automatic-term-headline",
+  "description": "WordPress plugin that automatically adds a Genesis Framework headline to the term archive page, the same as the name of taxonomy term, if no explicit value is given.",
+  "type": "wordpress-plugin",
+  "homepage": "https://github.com/garyjones/genesis-automatic-term-headline",
+  "license": "GPL-2.0+",
+  "authors": [
+    {
+      "name": "Gary Jones",
+      "homepage": "https://gamajo.com",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/garyjones/genesis-automatic-term-headline/issues"
+  },
+  "require": {
+    "composer/installers": "^1.0"
+  }
+}
