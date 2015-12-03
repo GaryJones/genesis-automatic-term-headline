@@ -52,32 +52,117 @@ function genesis_automatic_term_headline_do_taxonomy_title_description() {
 
 	global $wp_query;
 
-	if ( ! is_category() && ! is_tag() && ! is_tax() ) {
+	if ( ! genesis_automatic_term_headline_is_term_archive_first_page() ) {
 		return;
 	}
 
-	if ( get_query_var( 'paged' ) >= 2 ) {
+	$term = genesis_automatic_term_headline_get_term();
+
+	if ( genesis_automatic_term_headline_is_valid_term( $term ) ) {
 		return;
 	}
 
-	$term = is_tax() ? get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) ) : $wp_query->get_queried_object();
+	$headline_text = genesis_automatic_term_headline_get_headline_text( $term );
 
+	$headline = sprintf( '<h1 class="archive-title">%s</h1>', strip_tags( $headline_text ) );
+
+	$intro_text = genesis_automatic_term_headline_get_intro_text( $term );
+	?>
+	<div class="archive-description taxonomy-description"><?php echo $headline . $intro_text; ?></div>
+	<?php
+}
+
+/**
+ * Check if viewing first page of a category, tag or custom taxonomy term archive.
+ *
+ * @since 2.0.0
+ *
+ * @return bool True if on the first page of a term archive, false otherwise.
+ */
+function genesis_automatic_term_headline_is_term_archive_first_page() {
+	if ( ( is_category() || is_tag() || is_tax() ) && ! get_query_var( 'paged' ) >= 2 ) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Get term for current archive.
+ *
+ * Taxonomy terms and category / tag terms work slightly differently.
+ *
+ * @since 2.0.0
+ *
+ * @return string Term for this archive.
+ */
+function genesis_automatic_term_headline_get_term() {
+	if ( is_tax() ) {
+		return get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) );
+	}
+
+	global $wp_query;
+
+	return $wp_query->get_queried_object();
+}
+
+/**
+ * Check if term exists and has meta values.
+ *
+ * @since 1.0.0
+ *
+ * @param object $term Term object.
+ * @return bool False if term is falsy or has no meta property. True otherwise.
+ */
+function genesis_automatic_term_headline_is_valid_term( $term ) {
 	if ( ! $term || ! isset( $term->meta ) ) {
-		return;
+		return false;
 	}
 
+	return true;
+}
+
+/**
+ * Get term headline text.
+ *
+ * By default, the headline text is the term name.
+ * 
+ * If a custom headline text has been set, then use that instead.
+ *
+ * If `genesis-automatic-term-headline-exclusion` filter has been set as true,
+ * then exclude the term headline and use an empty string.
+ *
+ * @since 1.0.0
+ *
+ * @param object $term Term object.
+ * @return string Term headline.
+ */
+function genesis_automatic_term_headline_get_headline_text( $term ) {
 	$headline_text = $term->name;
 
 	if ( $term->meta['headline'] ) {
 		$headline_text = $term->meta['headline'];
-	} elseif ( apply_filters( 'genesis-automatic-term-headline-exclusion', false ) ) {
+	} elseif ( apply_filters( 'genesis-automatic-term-headline-exclusion', false, $term ) ) {
 		$headline_text = '';
 	}
 
-	$headline = sprintf( '<h1 class="archive-title">%s</h1>', strip_tags( $headline_text ) );
+	return $headline_text;
+}
 
-	$intro_text = $term->meta['intro_text'] ? apply_filters( 'genesis_term_intro_text_output', $term->meta['intro_text'] ) : '';
-	?>
-	<div class="archive-description taxonomy-description"><?php echo $headline . $intro_text; ?></div>
-	<?php
+/**
+ * Get intro text for a term.
+ *
+ * If it exists, apply Genesis filter.
+ *
+ * @since 1.0.0
+ *
+ * @param object $term Term object.
+ * @return string Term intro text.
+ */
+function genesis_automatic_term_headline_get_intro_text( $term ) {
+	if ( $term->meta['intro_text'] ) {
+		return apply_filters( 'genesis_term_intro_text_output', $term->meta['intro_text'] );
+	}
+	
+	return '';
 }
